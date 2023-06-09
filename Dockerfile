@@ -25,7 +25,7 @@ ARG REDISPORT
 ARG REDISUSER
 ARG REDISPASSWORD
 
-COPY --from=build /home/app/target/ssf_Assessment-0.0.1-SNAPSHOT.jar /usr/local/lib/ssf_Assessment.jar
+COPY --from=build /home/app/target/ssf-Assessment-0.0.1-SNAPSHOT.jar /usr/local/lib/ssf-Assessment.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/usr/local/lib/ssf_Assessment.jar"]
+ENTRYPOINT ["java", "-jar", "/usr/local/lib/ssf-Assessment.jar"]
