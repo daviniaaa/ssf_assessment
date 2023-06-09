@@ -41,7 +41,8 @@ public class AuthenticationService {
 		HttpEntity<String> entity = new HttpEntity<>(userJson.toString(), headers);
 
 		String url = UriComponentsBuilder
-		.fromUriString("https://authservice-production-e8b2.up.railway.app/api/authenticate")
+		.fromUriString("https://authservice-production-e8b2.up.railway.app")
+		.path("/api/authenticate")
 		.toUriString();
 		
 		RestTemplate template= new RestTemplate();
@@ -100,10 +101,14 @@ public class AuthenticationService {
 		redisRepo.timeout(username);
 	}
 
+	public boolean isTimeout(String username) {
+		return redisRepo.isTimeout(username);
+	}
+
 	// TODO: Task 5
 	// DO NOT CHANGE THE METHOD'S SIGNATURE
 	// Write an implementation to check if a given user's login has been disabled
 	public boolean isLocked(String username) {
-		return redisRepo.isTimeout(username);
+		return false;
 	}
 }

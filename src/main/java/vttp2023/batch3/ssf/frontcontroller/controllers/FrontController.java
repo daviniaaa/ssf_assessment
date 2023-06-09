@@ -87,7 +87,7 @@ public class FrontController {
 			return "view0";
 		}
 
-		if (service.isLocked(user.getUsername())) {
+		if (service.isTimeout(user.getUsername())) {
 			return "view2";
 		}
 
@@ -160,16 +160,38 @@ public class FrontController {
 		} finally {
 			session.setAttribute("auth", "true");
 		}
-
+		
 		return "view1";
 		
 	}
 
-	@GetMapping("/login")
-	public String directAccess(HttpSession session) {
-		if(((String) session.getAttribute("auth")).equals("true"))
-			return "view1";
+	@PostMapping("/")
+	public String logout(Model model, HttpSession session) {
+		session.setAttribute("auth", "false");
+
+		User user = (User) model.getAttribute("user");
+		if (user == null)
+			user = new User();
+		model.addAttribute("user", user);
+
+		String auth = (String) session.getAttribute("auth");
+		if (auth == null) {
+			session.setAttribute("auth", "false");
+		} else {
+			session.setAttribute("auth", auth);
+		}
 		
+		Integer captcha = (Integer) session.getAttribute("captcha");
+		if (captcha == null) {
+			session.setAttribute("captcha", 0);
+			captcha = 0;
+		} else {
+			session.setAttribute("captcha", captcha);
+		}
+		System.out.println("initial captcha: " + captcha);
+		model.addAttribute("captcha", captcha);
+		// session.invalidate();
 		return "view0";
 	}
+
 }
